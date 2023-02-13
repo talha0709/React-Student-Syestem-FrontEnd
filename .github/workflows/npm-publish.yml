@@ -1,0 +1,31 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: CICD.js Package
+
+on:
+  push:
+    branches: ["Master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm test
+      
+      - name: deploy to Server
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+         username: ${{ secrets.HOST_USERNAME }}
+         server: ${{ vars.HOST_IP }}
+         ssh_private_key: ${{ secrets.EC2_SSH_KEY }}
+         local_path: './zipped/*'
+         remote_path: ${{ vars.HOST_TARGET_DIR_STAGING}}
+         sftp_only: true
+         sftpArgs: '-o ConnectTimeout=55'
