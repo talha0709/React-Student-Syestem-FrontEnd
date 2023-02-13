@@ -24,8 +24,8 @@ jobs:
         with:
          username: ${{ secrets.HOST_USERNAME }}
          server: ${{ vars.HOST_IP }}
-         ssh_private_key: ${{ secrets.EC2_SSH_KEY }}
+         ssh_private_key: ${{ secrets.key }}
          local_path: './zipped/*'
-         remote_path: ${{ vars.HOST_TARGET_DIR_STAGING}}
+         remote_path: ${{ vars.HOST_DIR}}
          sftp_only: true
          sftpArgs: '-o ConnectTimeout=55'
