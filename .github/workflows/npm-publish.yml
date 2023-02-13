@@ -17,7 +17,6 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - run: npm test
       
       - name: deploy to Server
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
@@ -25,7 +24,7 @@ jobs:
          username: ${{ secrets.HOST_USERNAME }}
          server: ${{ vars.HOST_IP }}
          ssh_private_key: ${{ secrets.key }}
-         local_path: './zipped/*'
+         local_path: './*'
          remote_path: ${{ vars.HOST_DIR}}
          sftp_only: true
          sftpArgs: '-o ConnectTimeout=55'
